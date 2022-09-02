@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>EDIT</h1>
+<hr>
+<form action="{% url 'movies:update' movie.pk %}" method = 'POST'>
+  {% csrf_token %}
+  <label for="title">TITLE</label>
+  <input type="text" id="title" name="title" value="{{movie.title}}"><br>
+  <label for="audience">AUDIENCE</label>
+  <input type="number" id="audience" name="audience" value="{{movie.audience}}"><br>
+  <label for='release_date'>RELEASE_DATE</label>
+  <input type="date" id="release_date" name="release_date" value="{{movie.release_date}}"><br>
+  <label for='genre'>GENRE</label>
+  <select name="genre" id="genre">
+    <option value="코미디">코미디</option>
+    <option value="판타지">판타지</option>
+    <option value="로맨스">로맨스</option>
+    <option value="스릴러">스릴러</option>
+    <option value="느와르">느와르</option>
+    <option value="액션">액션</option>
+    <option value="드라마">드라마</option>
+  </select><br>
+  <label for="score">SCORE</label>
+  <input type="number" step=0.01 id="score" name="score" value="{{movie.score}}"><br>
+  <label for='poster_url'>POSTER_URL</label>
+  <input type="text" id="poster_url" name="poster_url" value="{{movie.poster_url}}"><br>
+  <label for='description'>DESCRIPTION</label>
+  <input type="text" id="description" name="description" value="{{movie.description}}"><br>
+  <input type="reset" value="Reset">
+  <input type="submit" value="Submit">
+  <hr>
+</form>
+<a href="{% url 'movies:index' %}">BACK</a>
+{% endblock content %}

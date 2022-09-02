@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>INDEX</h1>
+<a href="{% url 'movies:new' %}">[NEW]</a>
+<hr>
+{% for movie in movies %}
+  <h3>"{{movie.title}}"</h3>
+  <p>개봉일: {{movie.release_date}}</p>
+  <p>장르: {{movie.genre}}</p>
+  <p>★평점: {{movie.score}}</p>
+  <a href="{% url 'movies:detail' movie.pk %}">[기본정보]</a>
+  <hr>
+{% endfor %}
+{% endblock content %}
