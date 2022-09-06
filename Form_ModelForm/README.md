@@ -267,3 +267,35 @@
 - **차이점**
     - new와 edit는 GET 요청에 대한 처리만을, Create와 Update는 POST 요청에 대한 처리만을 진행
 - 이 공통점과 차이점을 기반으로, 하나의 view 함수에서 method에 따라 로직이 분리되도록 변경
+
+### Create
+- new와 create view 함수를 합침
+- 각각의 역할을 request.method 값을 기준으로 나뉨
+
+![11](https://user-images.githubusercontent.com/104968672/188759816-99facbc4-eb34-4ffb-b8cd-34aabf5290de.png)
+
+- 이제는 불필요해진 new의 view 함수와 url path를 삭제
+
+![22](https://user-images.githubusercontent.com/104968672/188759848-0d71eb7f-d6c2-4e1a-879c-01fd13caf499.png)
+
+- new.html -> create.html 이름 변경 및 action 속성 값 수정
+
+![33](https://user-images.githubusercontent.com/104968672/188759870-804de7fc-3a52-4cfb-a760-266801383707.png)
+
+- new.html -> create.html 이름 변경으로 인한 템플릿 경로 수정
+
+![44](https://user-images.githubusercontent.com/104968672/188759889-4c401950-d94e-4721-b654-dd004ab75ec5.png)
+
+- index 페이지에 있던 new 관련 링크 수정
+
+![55](https://user-images.githubusercontent.com/104968672/188759907-479e293a-5966-436e-b6db-09fe452e90c3.png)
+
+### context의 들여쓰기 위치
+- 이렇게 작성하면 if form.is_valid():에서 false로 평가 받았을 때 이어질 코드가 없음
+
+![66](https://user-images.githubusercontent.com/104968672/188759923-3dc42ae6-a5d4-420c-8c65-d2938ad2da27.png)
+
+- 반면 아래와 같이 작성하면 if form.is_valid():에서 false로 평가 받았을 때 에러 정보가 담긴 form 인스턴스가 context로 넘어갈 수 있음
+
+![77](https://user-images.githubusercontent.com/104968672/188759937-bd8b9a42-d2a1-430f-ac01-90861fa4d779.png)
+
