@@ -176,3 +176,94 @@
     - https://github.com/django/django/blob/7bdd09d016f418719f2d0297f58bd81c5349101d/django/forms/models.py#L286
 
 # ModelForm with view functions
+### 개요
+- ModelForm으로 인한 view 함수의 구조 변화 알아보기
+
+### CREATE
+- 유효성 검사를 통과하면
+    - 데이터 저장 후
+    - 상세 페이지로 리다이렉트
+    
+    ![11](https://user-images.githubusercontent.com/104968672/188544722-7d0f25e1-7fef-47ad-bac1-5a434930be67.png)
+
+- 통과하지 못하면
+    - 작성 페이지로 리다이렉트
+
+### "is_valid()" method
+- 유효성 검사를 실행하고, 데이터가 유효한지 여부를 boolean으로 반환
+- 데이터 유효성 검사를 보장하기 위한 많은 테스트에 대해 Django는 is_valid()를 제공하여 개발자의 편의를 도움
+
+### form 인스턴스의 errors 속성
+- is_valid()의 반환 값이 False인 경우 form 인스턴스의 errors 속성에 값이 작성되는데, 유효성 검증을 실패한 원인이 딕셔너리 형태로 저장됨
+
+    ![22](https://user-images.githubusercontent.com/104968672/188544780-9c2897d8-c46b-4f01-a189-d7cfa213f2a7.png)
+
+- title에 공백을 넣고 제출해보기
+
+    ![33](https://user-images.githubusercontent.com/104968672/188544816-5242a2f3-db6a-4bcb-8e81-a9df848dbcdc.png)
+
+- 이와 같은 특징을 통해 다음과 같은 구조로 코드를 작성하면 유효성 검증을 실패했을 때 사용자에게 실패 결과 메세지를 출력해줄 수 있음
+
+    ![44](https://user-images.githubusercontent.com/104968672/188544843-7ca2e3ea-417f-4a2c-bbcf-6c5a72304254.png)
+
+### The "save()" method
+- form 인스턴스에 바인딩 된 데이터를 통해 데이터베이스 객체를 만들고 저장
+- ModelForm의 하위 클래스는 키워드 인자 instance 여부를 통해 생성할 지, 수정할 지를 결정함
+    - 제공되지 않은 경우 save()는 지정된 모델의 새 인스턴스를 만듦(CREATE)
+    - 제공되면 save()는 해당 인스턴스를 수정(UPDATE)
+
+        ![55](https://user-images.githubusercontent.com/104968672/188544879-0aa4513d-ae7b-4efa-bd3a-d437e413c26d.png)
+
+### UPDATE
+- ModelForm의 인자 instance는 수정 대상이 되는 객체(기존 객체)를 지정
+1. request.POST
+    - 사용자가 form을 통해 전송한 데이터(새로운 데이터)
+2. instance
+    - 수정이 되는 대상
+
+- edit - view 수정
+
+    ![66](https://user-images.githubusercontent.com/104968672/188544918-94c8382d-6e96-4be5-87da-5752ed5a070d.png)
+
+- edit - template 수정
+
+    ![77](https://user-images.githubusercontent.com/104968672/188544948-53f90305-57b2-4f8b-8893-d78411cde53e.png)
+
+- update - view 수정
+
+    ![88](https://user-images.githubusercontent.com/104968672/188544956-f87cd2a8-afad-4383-9110-968f9f79c9f2.png)
+
+### [참고] ModelForm 키워드 인자 data와 instance 살펴보기
+- https://github.com/django/django/blob/7bdd09d016f418719f2d0297f58bd81c534910d/django/forms/models.py#L286
+
+![99](https://user-images.githubusercontent.com/104968672/188545008-10792911-ca6f-4b4b-b97f-7da3a40c6a5c.png)
+
+### Form과 ModelForm
+- ModelForm이 Form보다 더 좋은 것이 아니라 각자 역할이 다른 것
+- Form
+    - 사용자로부터 받은 데이터가 DB와 연관되어 있지 않는 경우에 사용
+    - DB에 영향을 미치지 않고 단순 데이터만 사용되는 경우
+    -(예시 - 로그인, 사용자의 데이터를 받아 인증 과정에서만 사용 후 별도로 DB에 저장하지 않음)
+- ModelForm
+    - 사용자로부터 받는 데이터가 DB와 연관되어 있는 경우에만 사용
+    - 데이터의 유효성 검사가 끝나면 데이터를 각각 어떤 레코드에 맵핑해야 할 지 이미 않고 있기 때문에 곧바로 save() 호출이 가능
+
+# Widgets 활용하기
+### 위젯을 작성하는 2가지 방법
+
+![11](https://user-images.githubusercontent.com/104968672/188545407-200253c1-c2c6-4431-959d-8cc0bbe57063.png)
+
+### Widgets 활용하기
+
+![22](https://user-images.githubusercontent.com/104968672/188545421-244e4b69-b56b-4ad6-afff-5eb843b340d4.png)
+
+# Handling HTTP requests
+### 개요
+- "HTTP requests 처리에 따른 view 함수 구조 변화"
+- new-create, edit-update의 view 함수 역할 잘 살펴보면 하나의 공통점과 하나의 차이점이 있음
+- **공통점**
+    - new-create는 모두 CREATE 로직을 구현하기 위한 공통 목적
+    - edit-update는 모두 UPDATE 로직을 구현하기 위한 공통 목적
+- **차이점**
+    - new와 edit는 GET 요청에 대한 처리만을, Create와 Update는 POST 요청에 대한 처리만을 진행
+- 이 공통점과 차이점을 기반으로, 하나의 view 함수에서 method에 따라 로직이 분리되도록 변경
