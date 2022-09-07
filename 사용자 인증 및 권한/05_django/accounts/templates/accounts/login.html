@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% comment %} 이게 바로 AuthenticationForm이다. {% endcomment %}
+{% block content %}
+    <h1>LOGIN</h1>
+    {% comment %} # next를 처리하려면 url을 비워놔야 됨 {% endcomment %}
+    {% comment %} <form action=" " method="POST"> {% endcomment %}
+    <form action="{% url 'accounts:login' %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit">
+    </form>
+{% endblock content %}

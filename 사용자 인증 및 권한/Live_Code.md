@@ -1025,7 +1025,7 @@ def update(request):
 </html>
 ```
 
-# 비밀번호 변경 (PasswordCHangeForm)
+# 비밀번호 변경 (PasswordChangeForm)
 ### accounts -> urls.py
 ```
 from django.urls import path
