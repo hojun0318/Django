@@ -104,6 +104,8 @@ URL의 단점을 극복하기 위해 등장했으며 자원이 어디에 위치�
 
 - URL은 다음과 같이 여러 부분으로 구성되며 일부는 필수이고 나머지는 선택사항
 
+![1](https://user-images.githubusercontent.com/104968672/196306271-bf12ccf1-2c0e-45a6-903a-3947ac3cc9bb.PNG)
+
 ### URL 구조
 - Scheme (or protocol)
 ```
