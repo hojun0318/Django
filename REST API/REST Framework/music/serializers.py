@@ -10,7 +10,7 @@ class ArtistListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artist
         fields = ('id', 'name')
-        read_only_fields = ('artist',)
+        # read_only_fields = ('artist',)
 
 
 # MusicListSerializer
